@@ -8,23 +8,28 @@
 import SwiftUI
 
 struct FeedCellView: View {
+
+    let post: Post
+
     var body: some View {
         VStack {
             HStack {
-                Image(.profile)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 40, height: 40)
-                    .clipShape(Circle())
+                if let user = post.user {
+                    Image(user.profileImageURL ?? "")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 40, height: 40)
+                        .clipShape(Circle())
 
-                Text("spike")
-                    .font(.footnote)
-                    .fontWeight(.semibold)
+                    Text(user.username)
+                        .font(.footnote)
+                        .fontWeight(.semibold)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.leading, 8)
 
-            Image(.feedSpike1)
+            Image(post.imageUrl)
                 .resizable()
                 .scaledToFill()
                 .frame(height: 400)
@@ -57,7 +62,7 @@ struct FeedCellView: View {
             .padding(.top, 4)
             .foregroundStyle(Color.black)
 
-            Text("23 likes")
+            Text("\(post.likes) likes")
                 .font(.footnote)
                 .fontWeight(.semibold)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -65,8 +70,8 @@ struct FeedCellView: View {
                 .padding(.top, 1)
 
             HStack {
-                Text("spike ").fontWeight(.semibold) +
-                Text("This caption is really long, it should wrap to the next line")
+                Text("\(post.user?.username ?? "") ").fontWeight(.semibold) +
+                Text(post.caption)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .font(.footnote)
@@ -85,5 +90,5 @@ struct FeedCellView: View {
 }
 
 #Preview {
-    FeedCellView()
+    FeedCellView(post: Post.mockPosts[0])
 }
