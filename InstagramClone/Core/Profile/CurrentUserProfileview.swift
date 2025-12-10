@@ -28,7 +28,9 @@ struct CurrentUserProfileview: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-
+                        Task {
+                            AuthService.shared.signOut()
+                        }
                     } label: {
                         Image(systemName: "line.3.horizontal")
                     }
