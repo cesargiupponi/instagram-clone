@@ -10,6 +10,7 @@ import SwiftUI
 struct CreateUsernameView: View {
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(RegistrationViewModel.self) var viewModel: RegistrationViewModel
     @State private var username: String = ""
 
     var body: some View {
@@ -35,6 +36,12 @@ struct CreateUsernameView: View {
             .padding(.vertical)
 
             Spacer()
+        }
+        .onAppear {
+            username = viewModel.username
+        }
+        .onChange(of: username) { oldValue, newValue in
+            viewModel.username = newValue
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {

@@ -10,6 +10,7 @@ import SwiftUI
 struct AddEmailView: View {
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(RegistrationViewModel.self) var viewModel: RegistrationViewModel
     @State private var email: String = ""
 
     var body: some View {
@@ -36,6 +37,12 @@ struct AddEmailView: View {
 
             Spacer()
         }
+        .onAppear {
+            email = viewModel.email
+        }
+        .onChange(of: email) { oldValue, newValue in
+            viewModel.email = newValue
+        }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Image(systemName: "chevron.left")
@@ -51,4 +58,5 @@ struct AddEmailView: View {
 
 #Preview {
     AddEmailView()
+        .environment(RegistrationViewModel())
 }

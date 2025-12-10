@@ -10,6 +10,7 @@ import SwiftUI
 struct CreatePasswordView: View {
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(RegistrationViewModel.self) var viewModel: RegistrationViewModel
     @State private var password: String = ""
 
     var body: some View {
@@ -44,6 +45,12 @@ struct CreatePasswordView: View {
             .padding(.vertical)
 
             Spacer()
+        }
+        .onAppear {
+            password = viewModel.password
+        }
+        .onChange(of: password) { oldValue, newValue in
+            viewModel.password = newValue
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
