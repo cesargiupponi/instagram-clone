@@ -19,6 +19,6 @@ class SearchViewModel {
     }
 
     func fetchAllUsers() async throws {
-        self.users = try await UserService.fetchAllUsers().filter { $0.id != AuthService.shared.currentUser?.id }
+        self.users = try await UserService.fetchAllUsers().filter { !$0.isCurrentUser }
     }
 }
