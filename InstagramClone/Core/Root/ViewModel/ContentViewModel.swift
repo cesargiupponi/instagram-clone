@@ -22,7 +22,17 @@ class ContentViewModel {
         }
     }
 
+    var currentUser: User? {
+        get {
+            service.currentUser
+        }
+        set {
+            service.currentUser = newValue
+        }
+    }
+
     init() {
         userSession = service.userSession
+        currentUser = service.currentUser
     }
 }
