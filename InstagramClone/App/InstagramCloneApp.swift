@@ -25,6 +25,7 @@ struct InstagramCloneApp: App {
     var body: some Scene {
         WindowGroup {
            ContentView()
+                .environment(AuthService.shared)
         }
     }
 }

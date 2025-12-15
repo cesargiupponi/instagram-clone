@@ -5,6 +5,7 @@
 //  Created by Cesar Giupponi on 28/11/25.
 //
 
+import Kingfisher
 import SwiftUI
 
 struct FeedCellView: View {
@@ -25,7 +26,7 @@ struct FeedCellView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.leading, 8)
 
-            Image(post.imageUrl)
+            KFImage(URL(string: post.imageUrl))
                 .resizable()
                 .scaledToFill()
                 .frame(height: 400)

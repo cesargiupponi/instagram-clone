@@ -9,16 +9,19 @@ import SwiftUI
 
 struct ContentView: View {
 
-    @State var viewModel = ContentViewModel()
+    @Environment(AuthService.self) var authService
     @State var registrationViewModel = RegistrationViewModel()
 
     var body: some View {
         Group {
-            if viewModel.userSession == nil {
+            if authService.userSession == nil {
                 LoginView()
                     .environment(registrationViewModel)
-            } else if let currentUser = viewModel.currentUser {
+            } else if let currentUser = authService.currentUser {
                 MainTabView(user: currentUser)
+            } else {
+                // Loading state while user data is being fetched
+                ProgressView()
             }
         }
     }
@@ -26,4 +29,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .environment(AuthService.shared)
 }
