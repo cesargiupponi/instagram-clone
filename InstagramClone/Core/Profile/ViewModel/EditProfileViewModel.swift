@@ -12,6 +12,11 @@ import SwiftUI
 @Observable
 class EditProfileViewModel {
 
+    var profileImage: Image?
+    var fullName: String = ""
+    var bio: String = ""
+    var user: User
+
     var selectedImage: PhotosPickerItem? {
         didSet {
             Task {
@@ -20,9 +25,9 @@ class EditProfileViewModel {
         }
     }
 
-    var profileImage: Image?
-    var fullName: String = ""
-    var bio: String = ""
+    init(user: User) {
+        self.user = user
+    }
 
     @MainActor
     func loadImage(fromItem item: PhotosPickerItem?) async {
@@ -32,5 +37,22 @@ class EditProfileViewModel {
         guard let uiImage = UIImage(data: data) else { return }
 
         self.profileImage = Image(uiImage: uiImage)
+    }
+
+    func updateUserData() async throws {
+
+        var data = [String: Any]()
+
+        if !fullName.isEmpty && user.fullName != fullName {
+            data["fullName"] = fullName
+        }
+        if !bio.isEmpty && user.bio != bio {
+            data["bio"] = bio
+        }
+
+        if !data.isEmpty {
+            try await Firestore.firestore().collection("users").document(user.id).updateData(data)
+        }
+
     }
 }
