@@ -12,6 +12,8 @@ import SwiftUI
 @Observable
 class EditProfileViewModel {
 
+    private var uiImage: UIImage?
+
     var profileImage: Image?
     var fullName: String = ""
     var bio: String = ""
@@ -35,13 +37,18 @@ class EditProfileViewModel {
         guard let item = item else { return }
         guard let data = try? await item.loadTransferable(type: Data.self) else { return }
         guard let uiImage = UIImage(data: data) else { return }
-
+        self.uiImage = uiImage
         self.profileImage = Image(uiImage: uiImage)
     }
 
     func updateUserData() async throws {
 
         var data = [String: Any]()
+
+        if let uiImage = uiImage {
+            let imageUrl = try? await ImageUploader.uploadImage(image: uiImage)
+            data["profileImageUrl"] = imageUrl
+        }
 
         if !fullName.isEmpty && user.fullName != fullName {
             data["fullName"] = fullName
