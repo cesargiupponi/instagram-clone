@@ -11,7 +11,7 @@ import Foundation
 struct User: Identifiable, Hashable, Codable {
     let id: String
     var username: String
-    var profileImageURL: String?
+    var profileImageUrl: String?
     var fullName: String?
     var bio: String?
     let email: String
@@ -25,10 +25,10 @@ struct User: Identifiable, Hashable, Codable {
 extension User {
     static var mockUsers: [User] {
         return [
-            User(id: UUID().uuidString, username: "frajola", profileImageURL: "frajola", fullName: "Sylvester", bio: "Hello, world!", email: "frajola@example.com"),
-            User(id: UUID().uuidString, username: "pernalonga", profileImageURL: "pernalonga", fullName: "Bugs Bunny", bio: "Hello, world!", email: "pernlonga@example.com"),
-            User(id: UUID().uuidString, username: "pikachu", profileImageURL: "pikachu", fullName: "Jean-Luc Pikachu", bio: "Hello, world!", email: "pikachu@example.com"),
-            User(id: UUID().uuidString, username: "spike", profileImageURL: "spike", fullName: "Spike Bulldog", bio: "Hello, world!", email: "spike@example.com")
+            User(id: UUID().uuidString, username: "frajola", profileImageUrl: nil, fullName: "Sylvester", bio: "Hello, world!", email: "frajola@example.com"),
+            User(id: UUID().uuidString, username: "pernalonga", profileImageUrl: nil, fullName: "Bugs Bunny", bio: "Hello, world!", email: "pernlonga@example.com"),
+            User(id: UUID().uuidString, username: "pikachu", profileImageUrl: nil, fullName: "Jean-Luc Pikachu", bio: "Hello, world!", email: "pikachu@example.com"),
+            User(id: UUID().uuidString, username: "spike", profileImageUrl: nil, fullName: "Spike Bulldog", bio: "Hello, world!", email: "spike@example.com")
         ]
     }
 }

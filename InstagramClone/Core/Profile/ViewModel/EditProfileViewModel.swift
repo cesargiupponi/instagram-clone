@@ -29,6 +29,14 @@ class EditProfileViewModel {
 
     init(user: User) {
         self.user = user
+
+        if let fullName = user.fullName {
+            self.fullName = fullName
+        }
+
+        if let bio = user.bio {
+            self.bio = bio
+        }
     }
 
     @MainActor
