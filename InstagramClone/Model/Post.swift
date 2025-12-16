@@ -16,6 +16,7 @@ struct Post: Identifiable, Hashable, Codable {
     let imageUrl: String
     let timestamp: Timestamp
     var user: User?
+    var didLike: Bool? = false
 }
 
 extension Post {
@@ -28,7 +29,7 @@ extension Post {
                 ownerId: users[0].id,
                 caption: "Enjoying a lovely #Caturday! 🐾",
                 likes: 120,
-                imageUrl: "frajola",
+                imageUrl: "https://firebasestorage.googleapis.com:443/v0/b/instagramclone-75f71.firebasestorage.app/o/profile_images%2F8DD25D8A-9E1C-49ED-A346-2C351DF91476?alt=media&token=eafbebc9-8c6b-4aec-a75c-2ec4c881ad64",
                 timestamp: Timestamp(date: Date().addingTimeInterval(-60 * 60 * 2)) , // 2 hours ago
                 user: users[0]
             ),

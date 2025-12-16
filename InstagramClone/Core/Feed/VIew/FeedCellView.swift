@@ -10,7 +10,19 @@ import SwiftUI
 
 struct FeedCellView: View {
 
-    let post: Post
+    private var post: Post {
+        return viewModel.post
+    }
+
+    private var didLike: Bool {
+        return post.didLike ?? false
+    }
+
+    @State var viewModel: FeedCellViewModel
+
+    init(post: Post) {
+        self._viewModel = State(wrappedValue: FeedCellViewModel(post: post))
+    }
 
     var body: some View {
         VStack {
@@ -34,10 +46,11 @@ struct FeedCellView: View {
 
             HStack(spacing: 16) {
                 Button {
-
+                    handleLikeTapped()
                 } label: {
-                    Image(systemName: "heart")
+                    Image(systemName: didLike ? "heart.fill" : "heart")
                         .imageScale(.large)
+                        .foregroundStyle(didLike ? .red: .black)
                 }
 
                 Button {
@@ -82,6 +95,16 @@ struct FeedCellView: View {
                 .padding(.leading, 10)
                 .padding(.top, 1)
                 .foregroundStyle(Color.gray)
+        }
+    }
+
+    private func handleLikeTapped() {
+        Task {
+            if didLike {
+                try await viewModel.unlike()
+            } else {
+                try await viewModel.like()
+            }
         }
     }
 }
