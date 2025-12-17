@@ -10,6 +10,11 @@ import SwiftUI
 struct CommentsView: View {
 
     @State private var commentText = ""
+    @State var viewModel: CommentsViewModel
+
+    init(post: Post) {
+        self._viewModel = State(wrappedValue: CommentsViewModel(post: post))
+    }
 
     var body: some View {
         VStack {
@@ -46,7 +51,9 @@ struct CommentsView: View {
                         }
 
                     Button {
-
+                        Task {
+                            try await viewModel.uploadComment(commentText)
+                        }
                     } label: {
                         Text("Post")
                             .font(.subheadline)
@@ -62,5 +69,5 @@ struct CommentsView: View {
 }
 
 #Preview {
-    CommentsView()
+    CommentsView(post: Post.mockPosts[0])
 }
