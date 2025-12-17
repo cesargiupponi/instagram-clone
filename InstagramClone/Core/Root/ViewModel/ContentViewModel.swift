@@ -24,15 +24,15 @@ class ContentViewModel {
 
     var currentUser: User? {
         get {
-            service.currentUser
+            UserService.shared.currentUser
         }
         set {
-            service.currentUser = newValue
+            UserService.shared.currentUser = newValue
         }
     }
 
     init() {
         userSession = service.userSession
-        currentUser = service.currentUser
+        currentUser = UserService.shared.currentUser
     }
 }

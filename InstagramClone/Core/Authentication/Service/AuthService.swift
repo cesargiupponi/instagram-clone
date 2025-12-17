@@ -14,7 +14,6 @@ class AuthService {
 
     static let shared = AuthService()
     var userSession: FirebaseAuth.User?
-    var currentUser: User?
 
     init() {
         Task {
@@ -48,19 +47,18 @@ class AuthService {
 
     func loadUserData() async throws {
         self.userSession = Auth.auth().currentUser
-        guard let currentUid = self.userSession?.uid else { return }
-        self.currentUser = try await UserService.fetchUser(withUid: currentUid)
+        try await UserService.shared.fetchCurrentUser()
     }
 
     func signOut() {
         try? Auth.auth().signOut()
         self.userSession = nil
-        self.currentUser = nil
+        UserService.shared.currentUser = nil
     }
 
     private func uploadUserData(uid: String, username: String, email: String) async {
         let user = User(id: uid, username: username, email: email)
-        self.currentUser = user
+        UserService.shared.currentUser = user
         guard let encodedUser = try? Firestore.Encoder().encode(user) else { return }
         try? await Firestore.firestore().collection("users").document(user.id).setData(encodedUser)
     }

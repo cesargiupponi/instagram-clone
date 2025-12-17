@@ -17,7 +17,7 @@ struct ContentView: View {
             if authService.userSession == nil {
                 LoginView()
                     .environment(registrationViewModel)
-            } else if let currentUser = authService.currentUser {
+            } else if let currentUser = UserService.shared.currentUser {
                 MainTabView(user: currentUser)
             } else {
                 // Loading state while user data is being fetched
