@@ -18,6 +18,7 @@ struct FeedCellView: View {
         return post.didLike ?? false
     }
 
+    @State private var showComments = false
     @State var viewModel: FeedCellViewModel
 
     init(post: Post) {
@@ -54,7 +55,7 @@ struct FeedCellView: View {
                 }
 
                 Button {
-
+                    showComments.toggle()
                 } label: {
                     Image(systemName: "bubble.right")
                         .imageScale(.large)
@@ -97,6 +98,10 @@ struct FeedCellView: View {
                 .padding(.leading, 10)
                 .padding(.top, 1)
                 .foregroundStyle(Color.gray)
+        }
+        .sheet(isPresented: $showComments) {
+            CommentsView()
+                .presentationDragIndicator(.visible)
         }
     }
 
