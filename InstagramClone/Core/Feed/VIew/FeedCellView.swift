@@ -91,7 +91,7 @@ struct FeedCellView: View {
             .padding(.horizontal, 10)
             .padding(.top, 1)
 
-            Text("6h ago")
+            Text(post.timestamp.timestampToString())
                 .font(.footnote)
                 .fontWeight(.semibold)
                 .frame(maxWidth: .infinity, alignment: .leading)
