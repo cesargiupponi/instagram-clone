@@ -17,7 +17,7 @@ class AuthService {
 
     init() {
         Task {
-            try await loadUserData()
+            await loadUserData()
         }
     }
 
@@ -25,7 +25,7 @@ class AuthService {
         do {
             let result = try await Auth.auth().signIn(withEmail: email, password: password)
             self.userSession = result.user
-            try await loadUserData()
+            await loadUserData()
         } catch {
             #if DEBUG
                 print("DEBUG: Error logging in user: \(error.localizedDescription)")
@@ -45,9 +45,15 @@ class AuthService {
         }
     }
 
-    func loadUserData() async throws {
-        self.userSession = Auth.auth().currentUser
-        try await UserService.shared.fetchCurrentUser()
+    func loadUserData() async {
+        do {
+            self.userSession = Auth.auth().currentUser
+            try await UserService.shared.fetchCurrentUser()
+        } catch {
+            #if DEBUG
+                print("DEBUG: Failed to load user data: \(error.localizedDescription)")
+            #endif
+        }
     }
 
     func signOut() {
