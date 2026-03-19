@@ -57,9 +57,9 @@ struct ProfileHeaderView: View {
                 Spacer()
 
                 HStack(spacing: 8) {
-                    UserStatView(title: "Posts", value: 3)
-                    UserStatView(title: "Follower", value: 1)
-                    UserStatView(title: "Following", value: 1)
+                    UserStatView(title: "Posts", value: viewModel.stats.postsCount)
+                    UserStatView(title: "Follower", value: viewModel.stats.followersCount)
+                    UserStatView(title: "Following", value: viewModel.stats.followingCount)
                 }
             }
             .padding(.horizontal)
