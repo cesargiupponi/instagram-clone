@@ -31,6 +31,53 @@ class UserService {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         self.currentUser = try await FirebaseConstants.UsersCollection.document(uid).getDocument(as: User.self)
     }
+
+    static func fetchUsers(forConfig config: UserListConfig) async throws -> [User] {
+        switch config {
+        case .followers(let uid):
+            return try await fetchFollowers(withUid: uid)
+        case .following(let uid):
+            return try await fetchFollowing(withUid: uid)
+        case .likes(let postId):
+            return try await fetchPostLikesUSers(withPostId: postId)
+        case .explore:
+            return try await fetchAllUsers()
+        }
+    }
+
+    private static func fetchFollowers(withUid uid: String) async throws -> [User] {
+        let snapshot = try await FirebaseConstants
+            .FollowersCollection
+            .document(uid)
+            .collection("user-followers")
+            .getDocuments()
+
+        return try await fetchUsers(snapshot)
+    }
+
+    private static func fetchFollowing(withUid uid: String) async throws -> [User] {
+        let snapshot = try await FirebaseConstants
+            .FollowingCollection
+            .document(uid)
+            .collection("user-following")
+            .getDocuments()
+
+        return try await fetchUsers(snapshot)
+    }
+
+    private static func fetchPostLikesUSers(withPostId postId: String) async throws -> [User] {
+        return []
+    }
+
+    private static func fetchUsers(_ snapshot: QuerySnapshot) async throws -> [User] {
+        var users = [User]()
+
+        for doc in snapshot.documents {
+            users.append(try await fetchUser(withUid: doc.documentID))
+        }
+
+        return users
+    }
 }
 
 extension UserService {
@@ -88,30 +135,27 @@ extension UserService {
 extension UserService {
 
     static func fetchUserStats(uid: String) async throws -> UserStats {
-        async let followingSnapshot = try await FirebaseConstants
+        async let followingCount = FirebaseConstants
             .FollowingCollection
             .document(uid)
             .collection("user-following")
             .getDocuments()
+            .count
 
-        let followingCount = try await followingSnapshot.count
-
-        async let followersSnapshot = try await FirebaseConstants
+        async let followersCount = FirebaseConstants
             .FollowersCollection
             .document(uid)
             .collection("user-followers")
             .getDocuments()
+            .count
 
-        let followersCount = try await followersSnapshot.count
-
-        async let postsSnapshot = try await FirebaseConstants
+        async let postsCount = FirebaseConstants
             .PostsCollection
             .whereField("ownerId", isEqualTo: uid)
             .getDocuments()
-
-        let postsCount = try await postsSnapshot.count
-
-        return UserStats(
+            .count
+        
+        return try await UserStats(
             followingCount: followingCount,
             followersCount: followersCount,
             postsCount: postsCount
