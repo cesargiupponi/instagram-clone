@@ -30,4 +30,12 @@ class DeveloperPreview {
     
     let user = User.mockUsers[0]
     let post = Post.mockPosts[0]
+
+    let notifications: [Notification] = [
+        .init(id: NSUUID().uuidString, timestamp: Timestamp(), notificationSenderUid: "123", type: .like),
+        .init(id: NSUUID().uuidString, timestamp: Timestamp(), notificationSenderUid: "123", type: .follow),
+        .init(id: NSUUID().uuidString, timestamp: Timestamp(), notificationSenderUid: "123", type: .comment),
+        .init(id: NSUUID().uuidString, timestamp: Timestamp(), notificationSenderUid: "123", type: .like),
+        .init(id: NSUUID().uuidString, timestamp: Timestamp(), notificationSenderUid: "123", type: .like)
+    ]
 }
